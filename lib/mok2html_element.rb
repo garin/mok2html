@@ -58,6 +58,12 @@ module Mok
     end
   end
 
+  class Preformat < Element
+    def apply
+      %[<pre class="prettyprint linenums">#{CGI.escapeHTML(@contents.join)}</pre>\n]
+    end
+  end
+
   class ItemList < Element
     def apply
       return "" if @contents.empty?
