@@ -1,35 +1,35 @@
-= raf2html
-"raf2html" is raf document convert to HTML.
+= mok2html
+"mok2html" is mok document convert to HTML.
 
 == Require
 * ruby-2.0.0p353 or later
 
 == Installation
   // package install
-  $ gem install raf2html
+  $ gem install mok2html
 
 == Getting Started
-=== Edit raf document
+=== Edit mok document
 
-  $ vi mydoc.raf
+  $ vi mydoc.mok
   = This is My document
-  raf is simple document format.
+  mok is simple document format.
 
-format manutal : http://garin.jp/doc/raf/raf (this page is japanese)
+format manutal : http://garin.jp/doc/mok/mok (this page is japanese)
 
 === to HTML
-  $ raf2html mydoc.raf
+  $ mok2html mydoc.mok
   <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
   ...
   <h1>This is My document</h1> ...
-  <p>raf is simple document format.<br /></p>
+  <p>mok is simple document format.<br /></p>
   ...
 
 === Print Help
-  $ raf2html --help
+  $ mok2html --help
 
 == Read more
-Official Web Site : http://garin.jp/doc/raf/raf (this page is japanese)
+Official Web Site : http://garin.jp/doc/mok/mok2html (this page is japanese)
 
 == Copyright
 Copyright (c) 2011-2013 garin. See LICENSE.txt for

@@ -1,17 +1,17 @@
-# = raf2html.yaml.sample
-# raf2html 設定ファイルのサンプルです
+# = mok2html.yaml.sample
+# mok2html 設定ファイルのサンプルです
 #
 # == 使い方
-# 自身のホームディレクトリに .raf2html.yaml というファイル名で設置して値を編集します
-#   $ cp raf2html.yaml.sample ~/.raf2html.yaml
-#   $ vi ~/.raf2html.yaml
+# 自身のホームディレクトリに .mok2html.yaml というファイル名で設置して値を編集します
+#   $ cp mok2html.yaml.sample ~/.mok2html.yaml
+#   $ vi ~/.mok2html.yaml
 #
 # == 設定項目
 # コンバート時にHTMLファイルに埋め込むスタイルシート(デフォルト:"")
-#css: "~/raf2html.css"
+#css: "~/mok2html.css"
 
 # コンバート時にHTMLファイルに埋め込むjavascript(デフォルト:"")
-#js: "~/raf2html.js"
+#js: "~/mok2html.js"
 
 # リファレンス記法の「.%」を変換する拡張子(デフォルト:.html)
 #extension: ".html"
@@ -20,7 +20,7 @@
 #media_directory: "/usr/local/media"
 
 # HTMLタグをカスタマイズするためのRubyファイル(デフォルト:"")
-#custom_element: "/home/myname/raf2html/mycustom.rb"
+#custom_element: "/home/myname/mok2html/mycustom.rb"
 
 # ドキュメントのフォーマット(デフォルト:ja)
 #language: "ja"

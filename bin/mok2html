@@ -5,10 +5,10 @@
 $:.unshift File.join(File.dirname(__FILE__), "../lib")
 require "yaml"
 require "optparse"
-require "raf2html"
+require "mok2html"
 
 # 設定ファイル
-CONFIG_FILE="~/.raf2html.yaml"
+CONFIG_FILE="~/.mok2html.yaml"
 config_file_path = File.expand_path(CONFIG_FILE)
 
 # デフォルトの設定値
@@ -32,9 +32,9 @@ end
 
 # コマンドラインオプション
 opt = OptionParser.new do |opt|
-  opt.banner = "Usage: raf2html [options] file"
-  opt.version = Raf::Raf2Html::VERSION
-  opt.release = Raf::Raf2Html::RELEASE
+  opt.banner = "Usage: mok2html [options] file"
+  opt.version = Mok::Mok2Html::VERSION
+  opt.release = Mok::Mok2Html::RELEASE
   opt.on("-c", "--css file", "HTMLに埋め込むスタイルシートを指定") {|f| options[:css] = f}
   opt.on("-j", "--javascript file", "HTMLに埋め込むJavaScriptを指定") {|f| options[:js] = f}
   opt.on("-L", "--language LANG", "言語(デフォルトは #{options[:language]} 。ドキュメント側で指定されていればそちらを優先)"){|l| options[:language] = l}
@@ -44,8 +44,8 @@ opt = OptionParser.new do |opt|
   opt.on("-s","--extension string", "リファレンス記法で「.%」を置換する拡張子(デフォルト .html)"){|s| options[:extension] = s }
   opt.on("-m", "--media_directory directory", "画像や動画などのメディアファイルを配置する基底ディレクトリ"){|d| options[:media_directory] = d }
   opt.on("--custom_element file", "HTMLタグをカスタマイズするためのRubyファイル)"){|f| options[:custom_element] = f }
-  opt.on("-V","--parser-version", "使用する raf-parser のバージョンを表示"){
-    puts "raf-parser: #{Raf::VERSION} (#{Raf::RELEASE})"
+  opt.on("-V","--parser-version", "使用する mok-parser のバージョンを表示"){
+    puts "mok-parser: #{Mok::VERSION} (#{Mok::RELEASE})"
     exit 0
   }
 end
@@ -54,5 +54,5 @@ usage(opt) unless ARGV[0]
 
 # main
 src = File.open(ARGV[0],"r").readlines
-raf = Raf::Raf2Html.new(src, options)
-puts raf.to_html
+mok = Mok::Mok2Html.new(src, options)
+puts mok.to_html

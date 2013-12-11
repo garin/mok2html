@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # Copyright (C) garin <garin54@gmail.com> 2011
 # See the included file COPYING for details.
-require "raf2html_element"
+require "mok2html_element"
 require "cgi"
 
-module Raf
-  class Raf2Html
+module Mok
+  class Mok2Html
     VERSION = File.readlines(File.join(File.dirname(__FILE__),"../VERSION"))[0].strip
     RELEASE = File.readlines(File.join(File.dirname(__FILE__),"../RELEASE"))[0].strip
 
@@ -21,9 +21,9 @@ module Raf
       @quiet = options[:quiet]
 
       get_customized_element(options[:custom_element]) unless options[:custom_element].empty?
-      @raf = BlockParser.new(options)
+      @mok = BlockParser.new(options)
       @metadata = setup_metadata
-      @nodes = @raf.parse src
+      @nodes = @mok.parse src
     end
 
     # エレメントのカスタム用ファイルを読み込む
@@ -32,7 +32,7 @@ module Raf
     end
 
     def setup_metadata
-      metadata = @raf.metadata
+      metadata = @mok.metadata
       metadata[:language] = @language if metadata[:language].nil?
       metadata
     end
@@ -54,17 +54,17 @@ module Raf
     end
 
     def index
-      return "" if @raf.index[:head].nil?
-      str = "<div id='raf-index'>"
+      return "" if @mok.index[:head].nil?
+      str = "<div id='mok-index'>"
       level_pre = 1
-      @raf.index[:head].each_with_index do |h,i|
+      @mok.index[:head].each_with_index do |h,i|
         next if h[:level] == 1 or h[:level] == 6
 
         if h[:level] == 5
-          str += %[<div class="nonum"><a href="#raf-head#{h[:level]}-#{i+1}"><span class="space" />#{h[:title]}</a></div>\n]
+          str += %[<div class="nonum"><a href="#mok-head#{h[:level]}-#{i+1}"><span class="space" />#{h[:title]}</a></div>\n]
         else
           str += index_terminate(h[:level], level_pre)
-          str += "<li><a href='#raf-head#{h[:level]}-#{i+1}'>#{h[:index]}#{h[:title]}</a>\n"
+          str += "<li><a href='#mok-head#{h[:level]}-#{i+1}'>#{h[:index]}#{h[:title]}</a>\n"
           level_pre = h[:level]
         end
       end
@@ -91,7 +91,7 @@ module Raf
     end
 
     def metadata
-      str = "<div id='raf-metadata'>"
+      str = "<div id='mok-metadata'>"
       str += %[<div>#{CGI.escapeHTML(@metadata[:description])}</div>] unless @metadata[:description].nil?
       str += %[<ul class="list-inline">]
       %w{ author create update publisher version tag }.each do |m|
@@ -103,11 +103,11 @@ module Raf
     end
 
     def footnote
-      return "" if @raf.inline_index[:footnote].nil?
-      str = "<div id='raf-footnote'>"
-      @raf.inline_index[:footnote].each_with_index do |f,i|
-        str += "<a id='raf-footnote-#{i+1}' class='footnote' />"
-        str += "<a href='#raf-footnote-#{i+1}-reverse' class='footnote-reverse'>*#{i+1}</a>"
+      return "" if @mok.inline_index[:footnote].nil?
+      str = "<div id='mok-footnote'>"
+      @mok.inline_index[:footnote].each_with_index do |f,i|
+        str += "<a id='mok-footnote-#{i+1}' class='footnote' />"
+        str += "<a href='#mok-footnote-#{i+1}-reverse' class='footnote-reverse'>*#{i+1}</a>"
         str += " #{f[:content].map{|c| c.apply}}<br />"
       end
       str += "</div>"

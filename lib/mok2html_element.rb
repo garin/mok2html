@@ -2,9 +2,9 @@
 # Copyright (C) garin <garin54@gmail.com> 2011-2013
 # See the included file COPYING for details.
 require 'bundler/setup'
-require 'raf-parser'
+require 'mok-parser'
 
-module Raf
+module Mok
   class Element
     def newline_to_br(str)
       str.gsub("\n", "<br />\n")
@@ -38,7 +38,7 @@ module Raf
     def apply
       return "" if @contents[0] == 1
       str = ""
-      str += "<h#{@contents[0]} id='raf-head#{@contents[0]}-#{@contents[2]}'>"
+      str += "<h#{@contents[0]} id='mok-head#{@contents[0]}-#{@contents[2]}'>"
       str += "<a id='#{@contents[1].to_code}'></a>"
       str += " #{@contents[3]}" unless @contents[0] == 1 or @contents[0] == 5 or @contents[0] == 6
       str += "#{@contents[1]}</h#{@contents[0]}>\n"
@@ -208,7 +208,7 @@ module Raf
 
   class Footnote       < Element
     def apply
-      "<a href='#raf-footnote-#{@contents[1]}' name='raf-footnote-#{@contents[1]}-reverse' title='#{@contents[0].map {|c| c.apply}}' class='footnote-reverse'><sup><small>*#{@contents[1]}</small></sup></a>"
+      "<a href='#mok-footnote-#{@contents[1]}' name='mok-footnote-#{@contents[1]}-reverse' title='#{@contents[0].map {|c| c.apply}}' class='footnote-reverse'><sup><small>*#{@contents[1]}</small></sup></a>"
     end
   end
 
