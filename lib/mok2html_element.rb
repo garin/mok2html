@@ -54,7 +54,7 @@ module Mok
 
   class Quote < Element
     def apply
-      %[<pre class="prettyprint linenums">#{CGI.escapeHTML(@contents.join)}</pre>\n]
+      "<blockquote>#{@contents.map{|c|c.apply}}</blockquote>\n"
     end
   end
 
