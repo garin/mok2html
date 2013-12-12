@@ -14,7 +14,7 @@
 #js: "~/mok2html.js"
 
 # リファレンス記法の「.%」を変換する拡張子(デフォルト:.html)
-#extension: ".html"
+#reference_extension: ".html"
 
 # 画像やビデオ、音声などを配置するディレクトリ(デフォルト:"")
 #media_directory: "/usr/local/media"

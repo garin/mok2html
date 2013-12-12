@@ -12,7 +12,7 @@ CONFIG_FILE="~/.mok2html.yaml"
 config_file_path = File.expand_path(CONFIG_FILE)
 
 # デフォルトの設定値
-options = {:css => "", :js => "", :extension => '.html', :media_directory => "", :custom_element => "" , :language => 'ja', :index => true, :quiet => false}
+options = {:css => "", :js => "", :reference_extension => '.html', :media_directory => "", :custom_element => "" , :language => 'ja', :index => true, :quiet => false}
 
 # 設定ファイルの読み込み
 if File.exist?(config_file_path)
@@ -41,7 +41,7 @@ opt = OptionParser.new do |opt|
   opt.on("--[no-]index", "目次を生成する(デフォルトは生成する)"){|v| options[:index] = v }
   opt.on("--[no-]metadata", "メタ情報を出力しない(デフォルトは出力する)"){|v| options[:metadata] = v }
   opt.on("-q","--quiet", "本文だけを出力する(ヘッダやフッタは出力しない)"){ options[:quiet] = true }
-  opt.on("-s","--extension string", "リファレンス記法で「.%」を置換する拡張子(デフォルト .html)"){|s| options[:extension] = s }
+  opt.on("-s","--reference_extension string", "リファレンス記法で「.%」を置換する拡張子(デフォルト .html)"){|s| options[:reference_extension] = s }
   opt.on("-m", "--media_directory directory", "画像や動画などのメディアファイルを配置する基底ディレクトリ"){|d| options[:media_directory] = d }
   opt.on("--custom_element file", "HTMLタグをカスタマイズするためのRubyファイル)"){|f| options[:custom_element] = f }
   opt.on("-V","--parser-version", "使用する mok-parser のバージョンを表示"){
