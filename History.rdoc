@@ -1,3 +1,10 @@
+== 0.1.0 (2013-12-12)
+* プロジェクト名を raf2html から mok2html に変更
+
+* new: 新しいQUITE構文の追加
+* change: Referenceエレメントの拡張子オプション名を extension から reference_extension に変更
+* change: Quoteエレメントの名前をPreformatに変更
+
 == 0.0.8 (2013-12-10)
 * new: Reference の 拡張子書式(.%) に対応(@options[:extension])
 * new: LabelLink エレメントに対応
