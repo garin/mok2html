@@ -13,8 +13,8 @@ module Mok
       @debug = true
 
       # options
-      @css = File.open(File.expand_path(options[:css])).readlines.to_s unless options[:css].empty?
-      @js  = File.open(File.expand_path(options[:js])).readlines.to_s unless options[:js].empty?
+      @css = files_to_str(options[:css])
+      @js  = files_to_str(options[:js])
       @language = options[:language]
       @index = options[:index]
       @metadata = options[:metadata]
@@ -24,6 +24,16 @@ module Mok
       @mok = BlockParser.new(options)
       @metadata = setup_metadata
       @nodes = @mok.parse src
+    end
+
+    # 複数ファイルの文字列を返す
+    # files: ファイルの配列または","区切り文字列
+    def files_to_str(files = [])
+      files = files.split(",") unless defined? files.each
+      files.map do |f|
+        path = File.expand_path(f.strip)
+        File.open(path).readlines.join + "\n" unless path.empty?
+      end.join
     end
 
     # エレメントのカスタム用ファイルを読み込む
@@ -137,13 +147,13 @@ EOL
 
     def css
       str = ""
-      str += %[<style type="text/css"><!--\n#{@css}\n--></style>\n] unless @css.nil?
+      str += %[<style type="text/css"><!--\n#{@css}\n--></style>\n] unless @css.empty?
       str
     end
 
     def javascript
       str = ""
-      str += %[<script type="text/javascript">#{@js}</script>\n] unless @js.nil?
+      str += %[<script type="text/javascript">#{@js}</script>\n] unless @js.empty?
       str
     end
 

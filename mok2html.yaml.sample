@@ -7,19 +7,26 @@
 #   $ vi ~/.mok2html.yaml
 #
 # == 設定項目
-# コンバート時にHTMLファイルに埋め込むスタイルシート(デフォルト:"")
-#css: "~/mok2html.css"
+# コンバート時にHTMLファイルに埋め込むスタイルシート(デフォルト:なし)
+# css:
+#   - "~/doc/mok/css/bootstrap.css"
+#   - "~/doc/mok/css/prettify.css"
+#   - "~/doc/mok/css/_document.css"
 
-# コンバート時にHTMLファイルに埋め込むjavascript(デフォルト:"")
-#js: "~/mok2html.js"
+# コンバート時にHTMLファイルに埋め込むjavascript(デフォルト:なし)
+# js:
+#   - "~/doc/mok/js/jquery.js"
+#   - "~/doc/mok/js/bootstrap.js"
+#   - "~/doc/mok/js/prettify.js"
+#   - "~/doc/mok/js/prettify_onload.js"
 
 # リファレンス記法の「.%」を変換する拡張子(デフォルト:.html)
 #reference_extension: ".html"
 
-# 画像やビデオ、音声などを配置するディレクトリ(デフォルト:"")
+# 画像やビデオ、音声などを配置するディレクトリ(デフォルト:なし)
 #media_directory: "/usr/local/media"
 
-# HTMLタグをカスタマイズするためのRubyファイル(デフォルト:"")
+# HTMLタグをカスタマイズするためのRubyファイル(デフォルト:なし)
 #custom_element: "/home/myname/mok2html/mycustom.rb"
 
 # ドキュメントのフォーマット(デフォルト:ja)
@@ -31,5 +38,5 @@
 # メタデータを作成するかどうか(デフォルト: true)
 #metadata: true
 
-# HTMLヘッダを出力"しない"かどうか(デフォルト: false)
+# HTMLヘッダを出力((*しない*))かどうか(デフォルト: false)
 #quiet: false
