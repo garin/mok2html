@@ -19,10 +19,10 @@ format manutal : http://garin.jp/doc/mok/mok (this page is japanese)
 
 === to HTML
   $ mok2html mydoc.mok
-  <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  <!DOCTYPE html>
   ...
   <h1>This is My document</h1> ...
-  <p>mok is simple document format.<br /></p>
+  <p>mok is simple document format.<br></p>
   ...
 
 === Print Help

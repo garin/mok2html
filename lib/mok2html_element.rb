@@ -7,7 +7,7 @@ require 'mok-parser'
 module Mok
   class Element
     def newline_to_br(str)
-      str.gsub("\n", "<br />\n")
+      str.gsub("\n", "<br>\n")
     end
 
     # @inline_parser.parse の配列を文字列に変換する
@@ -17,6 +17,11 @@ module Mok
         str += obj.apply
       end
       str
+    end
+
+    # アンカーのhref用の文字列を作る
+    def anchor_escape(path)
+      CGI.escapeHTML(path.gsub(" ", "%20"))
     end
   end
 
@@ -39,9 +44,9 @@ module Mok
       return "" if @contents[0] == 1
       str = ""
       str += "<h#{@contents[0]} id='mok-head#{@contents[0]}-#{@contents[2]}'>"
-      str += "<a id='#{@contents[1].to_code}'></a>"
-      str += " #{@contents[3]}" unless @contents[0] == 1 or @contents[0] == 5 or @contents[0] == 6
-      str += "#{@contents[1]}</h#{@contents[0]}>\n"
+      str += %[<a id="#{@contents[1].to_code}"></a>]
+      str += " #{CGI.escapeHTML(@contents[3])}" unless @contents[0] == 1 or @contents[0] == 5 or @contents[0] == 6
+      str += "#{CGI.escapeHTML(@contents[1])}</h#{@contents[0]}>\n"
       str
     end
   end
@@ -111,8 +116,10 @@ module Mok
   class Desc < Element
     # @contents = [title, lines]
     def apply
-      str = %[<dl id="#{@contents[0].to_code}">\n<dt>#{@contents[0]}</dt>\n]
-      str += "<dd>#{inline_parse_to_str(@contents[1])}</dd>\n" unless inline_parse_to_str(@contents[1]).empty?
+      str = %[<dl>\n<dt>#{@contents[0]}</dt>\n]
+      str += "<dd>"
+      str += "#{inline_parse_to_str(@contents[1])}" unless inline_parse_to_str(@contents[1]).empty?
+      str += "</dd>"
       str += "</dl>"
       str
     end
@@ -155,7 +162,7 @@ module Mok
 
   class Reference < Element
     def apply
-      %[<a href="#{@contents[1]}" title="#{@contents[1]}">#{@contents[0]}</a>]
+      %[<a href="#{anchor_escape(@contents[1])}" title="#{@contents[1]}">#{@contents[0]}</a>]
     end
   end
 
@@ -192,7 +199,7 @@ module Mok
   end
   class Verb       < Element
     def apply
-      "#{@contents}"
+      "#{CGI.escapeHTML(@contents.join)}"
     end
   end
 
@@ -204,6 +211,7 @@ module Mok
   class Ruby       < Element
     def apply
       "<ruby><rb>#{@contents[0]}</rb><rp>(</rp><rt>#{@contents[1]}</rt><rp>)</rp></ruby>"
+      "<ruby>#{@contents[0]}<rp>(</rp><rt>#{@contents[1]}</rt><rp>)</rp></ruby>"
     end
   end
   class Variable       < Element
@@ -214,7 +222,7 @@ module Mok
 
   class Footnote       < Element
     def apply
-      "<a href='#mok-footnote-#{@contents[1]}' name='mok-footnote-#{@contents[1]}-reverse' title='#{@contents[0].map {|c| c.apply}}' class='footnote-reverse'><sup><small>*#{@contents[1]}</small></sup></a>"
+      %[<a href="#mok-footnote-#{@contents[1]}" id="mok-footnote-#{@contents[1]}-reverse" title="#{@contents[0].map {|c| CGI.escapeHTML(c.apply)}}" class="footnote-reverse"><sup><small>*#{@contents[1]}</small></sup></a>]
     end
   end
 
@@ -223,13 +231,13 @@ module Mok
       # @contents = [Name, Mime::MediaType, Mime::SubType]
       case @contents[1]
       when 'image'
-        %[<a href="#{@contents[0]}"><img src="#{@contents[0]}" alt="#{@contents[0]}" class="img-rounded img-responsive" /></a>]
+        %[<a href="anchor_escape(#{@contents[0]})"><img src="#{@contents[0]}" alt="#{@contents[0]}" class="img-rounded img-responsive"></a>]
       when 'video'
-        %[<video src="#{@contents[0]}" controls></video>]
+        %[<video src="#{anchor_escape(@contents[0])}" controls></video>]
       when 'audio'
-        %[<audio src="#{@contents[0]}" controls></audio>]
+        %[<audio src="#{anchor_escape(@contents[0])}" controls></audio>]
       else
-        %[<a href="#{@contents[0]}">#{@contents[0].split("/").last}</a>]
+        %[<a href="#{anchor_escape(@contents[0])}">#{@contents[0].split("/").last}</a>]
       end
     end
   end

@@ -71,7 +71,7 @@ module Mok
         next if h[:level] == 1 or h[:level] == 6
 
         if h[:level] == 5
-          str += %[<div class="nonum"><a href="#mok-head#{h[:level]}-#{i+1}"><span class="space" />#{h[:title]}</a></div>\n]
+          str += %[<div class="nonum"><span class="space"></span><a href="#mok-head#{h[:level]}-#{i+1}">#{CGI.escapeHTML(h[:title])}</a></div>\n]
         else
           str += index_terminate(h[:level], level_pre)
           str += "<li><a href='#mok-head#{h[:level]}-#{i+1}'>#{h[:index]}#{h[:title]}</a>\n"
@@ -116,9 +116,9 @@ module Mok
       return "" if @mok.inline_index[:footnote].nil?
       str = "<div id='mok-footnote'>"
       @mok.inline_index[:footnote].each_with_index do |f,i|
-        str += "<a id='mok-footnote-#{i+1}' class='footnote' />"
-        str += "<a href='#mok-footnote-#{i+1}-reverse' class='footnote-reverse'>*#{i+1}</a>"
-        str += " #{f[:content].map{|c| c.apply}}<br />"
+        str += %[<a id="mok-footnote-#{i+1}" class="footnote"></a>]
+        str += %[<a href="#mok-footnote-#{i+1}-reverse" class="footnote-reverse">*#{i+1}</a>]
+        str += " #{f[:content].map{|c| c.apply}}<br>"
       end
       str += "</div>"
       str
@@ -126,23 +126,22 @@ module Mok
 
     def header
       str = <<EOL
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="#{@metadata[:language]}">
+<!DOCTYPE html>
+<html lang="#{@metadata[:language]}">
   <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta charset="utf-8">
 EOL
       str += css
       str += javascript
       str += <<EOL
-  <title>#{@metadata[:subject]}</title>
+  <title>#{CGI.escapeHTML(@metadata[:subject])}</title>
   </head>
 <body>
 EOL
     end
 
     def header_title
-      "<h1>#{@metadata[:subject]}</h1>\n"
+      "<h1>#{CGI.escapeHTML(@metadata[:subject])}</h1>\n"
     end
 
     def css
