@@ -17,10 +17,10 @@ def usage(opt)
 end
 
 def set_config_by_file(file, options)
-  p file
-  config = YAML.load_file( File.expand_path(file) )
+  file_path = File.expand_path(file)
+  return options unless  File.exist?(file_path)
+  config = YAML.load_file( file_path )
   if config
-    p config
     options.each do |key,val|
       options[key.to_sym] = config[key.to_s] unless config[key.to_s].nil?
     end
