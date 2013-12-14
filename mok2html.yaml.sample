@@ -23,8 +23,11 @@
 # リファレンス記法の「.%」を変換する拡張子(デフォルト:.html)
 #reference_extension: ".html"
 
+# リンク記法((<..>))のファイルを配置する基底ディレクトリ(デフォルト:なし)
+#reference_base_directory: ""
+
 # 画像やビデオ、音声などを配置するディレクトリ(デフォルト:なし)
-#media_directory: "/usr/local/media"
+#media_base_directory: "/usr/local/media"
 
 # HTMLタグをカスタマイズするためのRubyファイル(デフォルト:なし)
 #custom_element: "/home/myname/mok2html/mycustom.rb"

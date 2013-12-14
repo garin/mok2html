@@ -1,3 +1,10 @@
+== 0.1.1 (2013-12-14)
+* new: 設定ファイルを無効にする --no-config オプションを追加
+* new: reference_base_directory オプションを追加
+* change: HTML5に準拠するように出力するHTMLを修正
+* change: css と javascript のオプションを複数指定できるように変更
+* change: media_directory オプションを media_base_directory に変更
+
 == 0.1.0 (2013-12-12)
 * プロジェクト名を raf2html から mok2html に変更
 
