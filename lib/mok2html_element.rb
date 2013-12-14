@@ -231,7 +231,7 @@ module Mok
       # @contents = [Name, Mime::MediaType, Mime::SubType]
       case @contents[1]
       when 'image'
-        %[<a href="anchor_escape(#{@contents[0]})"><img src="#{@contents[0]}" alt="#{@contents[0]}" class="img-rounded img-responsive"></a>]
+        %[<a href="#{anchor_escape(@contents[0])}"><img src="#{@contents[0]}" alt="#{@contents[0]}" class="img-rounded img-responsive"></a>]
       when 'video'
         %[<video src="#{anchor_escape(@contents[0])}" controls></video>]
       when 'audio'
