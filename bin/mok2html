@@ -7,27 +7,25 @@ require "yaml"
 require "optparse"
 require "mok2html"
 
-# 設定ファイル
-CONFIG_FILE="~/.mok2html.yaml"
-config_file_path = File.expand_path(CONFIG_FILE)
-
 # デフォルトの設定値
-options = {:css => "", :js => "", :reference_extension => '.html', :reference_base_directory => "", :media_base_directory => "", :custom_element => "" , :language => 'ja', :index => true, :quiet => false}
-
-# 設定ファイルの読み込み
-if File.exist?(config_file_path)
-  config = YAML.load_file( config_file_path )
-  if config
-    options.each do |key,val|
-      options[key.to_sym] = config[key.to_s] unless config[key.to_s].nil?
-    end
-  end
-end
+options = {:css => "", :js => "", :reference_extension => '.html', :reference_base_directory => "", :media_base_directory => "", :custom_element => "" , :language => 'ja', :config => '~/.mok2html.yaml', :index => true, :quiet => false}
 
 # 使い方
 def usage(opt)
   puts opt.help
   exit 0
+end
+
+def set_config_by_file(file, options)
+  p file
+  config = YAML.load_file( File.expand_path(file) )
+  if config
+    p config
+    options.each do |key,val|
+      options[key.to_sym] = config[key.to_s] unless config[key.to_s].nil?
+    end
+  end
+  options
 end
 
 # コマンドラインオプション
@@ -38,6 +36,7 @@ opt = OptionParser.new do |opt|
   opt.on("-c", "--css file[,file,..]", "HTMLに埋め込むスタイルシートを指定") {|f| options[:css] = f}
   opt.on("-j", "--javascript file[,file,..]", "HTMLに埋め込むJavaScriptを指定") {|f| options[:js] = f}
   opt.on("-L", "--language LANG", "言語(デフォルトは #{options[:language]} 。ドキュメント側で指定されていればそちらを優先)"){|l| options[:language] = l}
+  opt.on("--[no-]config [file]", "設定ファイルを指定、または設定ファイルを使用しない(デフォルト:~/.mok2html)"){|v| options[:config] = v }
   opt.on("--[no-]index", "目次を生成する(デフォルトは生成する)"){|v| options[:index] = v }
   opt.on("--[no-]metadata", "メタ情報を出力しない(デフォルトは出力する)"){|v| options[:metadata] = v }
   opt.on("-q","--quiet", "本文だけを出力する(ヘッダやフッタは出力しない)"){ options[:quiet] = true }
@@ -51,7 +50,11 @@ opt = OptionParser.new do |opt|
   }
 end
 opt.parse!(ARGV)
+
 usage(opt) unless ARGV[0]
+
+# config file
+options = set_config_by_file(options[:config], options) if options[:config]
 
 # main
 src = File.open(ARGV[0],"r").readlines
