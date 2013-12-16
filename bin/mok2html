@@ -8,7 +8,7 @@ require "optparse"
 require "mok2html"
 
 # デフォルトの設定値
-options = {:css => "", :js => "", :reference_extension => '.html', :reference_base_directory => "", :media_base_directory => "", :custom_element => "" , :language => 'ja', :config => '~/.mok2html.yaml', :index => true, :quiet => false}
+options = {:css => "", :js => "", :reference_extension => '.html', :reference_base_directory => "", :media_base_directory => "", :partial_base_directory => "",:custom_element => "" , :language => 'ja', :config => '~/.mok2html.yaml', :index => true, :quiet => false, :variable_file => "" }
 
 # 使い方
 def usage(opt)
@@ -18,7 +18,7 @@ end
 
 def set_config_by_file(file, options)
   file_path = File.expand_path(file)
-  return options unless  File.exist?(file_path)
+  return options unless  File.file?(file_path)
   config = YAML.load_file( file_path )
   if config
     options.each do |key,val|
@@ -37,26 +37,32 @@ opt = OptionParser.new do |opt|
   opt.on("-j", "--javascript file[,file,..]", "HTMLに埋め込むJavaScriptを指定") {|f| options[:js] = f}
   opt.on("-L", "--language LANG", "言語(デフォルトは #{options[:language]} 。ドキュメント側で指定されていればそちらを優先)"){|l| options[:language] = l}
   opt.on("--[no-]config [file]", "設定ファイルを指定、または設定ファイルを使用しない(デフォルト:~/.mok2html)"){|v| options[:config] = v }
+  opt.on("--variable_file file", "変数用のファイル(デフォルト:なし)"){|v| options[:variable_file] = v }
   opt.on("--[no-]index", "目次を生成する(デフォルトは生成する)"){|v| options[:index] = v }
   opt.on("--[no-]metadata", "メタ情報を出力しない(デフォルトは出力する)"){|v| options[:metadata] = v }
   opt.on("-q","--quiet", "本文だけを出力する(ヘッダやフッタは出力しない)"){ options[:quiet] = true }
   opt.on("-s","--reference_extension string", "リファレンス記法で「.%」を置換する拡張子(デフォルト .html)"){|s| options[:reference_extension] = s }
   opt.on("-R", "--reference_base_directory directory", "リンク記法((<..>))のファイルを配置する基底ディレクトリ(デフォルト:なし)"){|d| options[:media_base_directory] = d }
   opt.on("-M", "--media_base_directory directory", "画像や動画などのメディア記法(($..$))のファイルを配置する基底ディレクトリ(デフォルト:なし)"){|d| options[:media_base_directory] = d }
+  opt.on("-P", "--partial_base_directory directory", "部分テンプレート(partial)記法((!..!))のファイルを配置する基底ディレクトリ(デフォルト:変換元ファイルのディレクトリ)"){|d| options[:partial_base_directory] = d }
   opt.on("--custom_element file", "HTMLタグをカスタマイズするためのRubyファイル)"){|f| options[:custom_element] = f }
+  opt.on("-v","--version", "mok2htmlのバージョンを表示"){
+    puts "mok2html: #{Mok::Mok2Html::VERSION} (#{Mok::Mok2Html::RELEASE})"
+    exit 0
+  }
   opt.on("-V","--parser-version", "使用する mok-parser のバージョンを表示"){
     puts "mok-parser: #{Mok::VERSION} (#{Mok::RELEASE})"
     exit 0
   }
 end
 opt.parse!(ARGV)
-
 usage(opt) unless ARGV[0]
 
 # config file
 options = set_config_by_file(options[:config], options) if options[:config]
 
 # main
+options[:src_file] = ARGV[0]
 src = File.open(ARGV[0],"r").readlines
 mok = Mok::Mok2Html.new(src, options)
 puts mok.to_html

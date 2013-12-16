@@ -3,6 +3,7 @@
 # See the included file COPYING for details.
 require "mok2html_element"
 require "cgi"
+require "yaml"
 
 module Mok
   class Mok2Html
@@ -19,6 +20,7 @@ module Mok
       @index = options[:index]
       @metadata = options[:metadata]
       @quiet = options[:quiet]
+      options[:variables] = get_variables(options[:variable_file])
 
       get_customized_element(options[:custom_element]) unless options[:custom_element].empty?
       @mok = BlockParser.new(options)
@@ -34,6 +36,14 @@ module Mok
         path = File.expand_path(f.strip)
         File.open(path).readlines.join + "\n" unless path.empty?
       end.join
+    end
+
+    # variables を生成する
+    def get_variables(file = "")
+      return {} if file.empty?
+      file_path = File.expand_path(file)
+      return {} unless File.file?(file_path)
+      YAML.load_file( file_path )
     end
 
     # エレメントのカスタム用ファイルを読み込む
