@@ -14,15 +14,15 @@ module Mok
       @debug = true
 
       # options
-      @css = files_to_str(options[:css])
-      @js  = files_to_str(options[:js])
-      @language = options[:language]
-      @index = options[:index]
-      @metadata = options[:metadata]
-      @quiet = options[:quiet]
-      options[:variables] = get_variables(options[:variable_file])
-
+      @css        = files_to_str(options[:css])
+      @javascript = files_to_str(options[:javascript])
+      @language   = options[:language]
+      @index      = options[:index]
+      @metadata   = options[:metadata]
+      @quiet      = options[:quiet]
+      options[:variables] = get_variables(options[:variable])
       get_customized_element(options[:custom_element]) unless options[:custom_element].empty?
+
       @mok = BlockParser.new(options)
       @metadata = setup_metadata
       @nodes = @mok.parse src
@@ -143,15 +143,19 @@ module Mok
 EOL
       str += css
       str += javascript
+      str += "<title>#{CGI.escapeHTML(@metadata[:subject])}</title>" unless @metadata[:subject].nil?
       str += <<EOL
-  <title>#{CGI.escapeHTML(@metadata[:subject])}</title>
   </head>
 <body>
 EOL
     end
 
     def header_title
-      "<h1>#{CGI.escapeHTML(@metadata[:subject])}</h1>\n"
+      unless @metadata[:subject].nil?
+        "<h1>#{CGI.escapeHTML(@metadata[:subject])}</h1>\n"
+      else
+        ""
+      end
     end
 
     def css
@@ -162,7 +166,7 @@ EOL
 
     def javascript
       str = ""
-      str += %[<script type="text/javascript">#{@js}</script>\n] unless @js.empty?
+      str += %[<script type="text/javascript">#{@javascript}</script>\n] unless @javascript.empty?
       str
     end
 
