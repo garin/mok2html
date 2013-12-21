@@ -1,3 +1,8 @@
+== 0.1.3 (2013-12-21)
+* new: variable_file と partial_base_directory の設定を追加
+* change: 設定をシステム(/etc/mok)とユーザ(~/.mok)の2箇所で指定できるように
+* change: コマンドラインオプションを整理
+
 == 0.1.2 (2013-12-14)
 ~/.mok2html.yaml が必須になっていたのを、オプションに変更
 
