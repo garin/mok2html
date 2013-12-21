@@ -23,7 +23,7 @@ options = {
   :quiet               => false,
   :custom_element      => "" ,
 }
-options_default = options
+options_default = options.dup.freeze
 
 # 使い方
 def usage(opt)
