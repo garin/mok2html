@@ -20,7 +20,7 @@ module Mok
       @index      = options[:index]
       @metadata   = options[:metadata]
       @quiet      = options[:quiet]
-      options[:variables] = get_variables(options[:variable])
+      options[:variables] = get_variables(files_to_str(options[:variable], true))
       get_customized_element(options[:custom_element]) unless options[:custom_element].empty?
 
       @mok = BlockParser.new(options)
@@ -30,20 +30,21 @@ module Mok
 
     # 複数ファイルの文字列を返す
     # files: ファイルの配列または","区切り文字列
-    def files_to_str(files = [])
+    # ignore: ファイルが存在しない時に無視する
+    def files_to_str(files = [], ignore = false)
       files = files.split(",") unless defined? files.each
       files.map do |f|
         path = File.expand_path(f.strip)
+        unless File.exist? path
+          next if ignore
+        end
         File.open(path).readlines.join + "\n" unless path.empty?
       end.join
     end
 
     # variables を生成する
-    def get_variables(file = "")
-      return {} if file.empty?
-      file_path = File.expand_path(file)
-      return {} unless File.file?(file_path)
-      YAML.load_file( file_path )
+    def get_variables(str = "")
+      YAML.load( str )
     end
 
     # エレメントのカスタム用ファイルを読み込む

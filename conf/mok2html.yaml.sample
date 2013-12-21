@@ -1,0 +1,50 @@
+# = mok2html.yaml.sample
+# mok2html 設定ファイルのサンプル
+#
+# == 使い方
+# ~/.mok/mok2html.yaml にファイルを置き、必要な設定を記述します。
+#  $ mkdir ~/.mok
+#  $ cp mok2html.yaml.sample ~/.mok/mok2html.yaml
+#  $ vi ~/.mok2html.yaml
+#
+#
+# == 設定項目
+# コンバート時にHTMLファイルに埋め込むスタイルシート(デフォルト:なし)
+#css:
+#  - "~/doc/mok/css/bootstrap.css"
+#  - "~/doc/mok/css/prettify.css"
+#  - "~/doc/mok/css/_document.css"
+#
+# コンバート時にHTMLファイルに埋め込むjavascript(デフォルト:なし)
+#javascript:
+#  - "~/doc/mok/js/jquery.js"
+#  - "~/doc/mok/js/bootstrap.js"
+#  - "~/doc/mok/js/prettify.js"
+#  - "~/doc/mok/js/prettify_onload.js"
+#
+# リファレンス修飾((<..>)で最後の「.%」を置換する拡張子( デフォルト:.html)
+#reference_extension: ".html"
+#
+# リンク修飾((<..>))のファイルを配置するディレクトリ(デフォルト:なし)
+#reference_directory: ""
+#
+# メディア修飾(($..$))で画像や動画などのファイルを配置す るディレクトリ(デフォルト:なし)
+#media_directory: "/usr/local/media"
+#
+# 部分テンプレート(partial)記法((!..!))のファイルを配置するディレクトリ(デフォルト:変換元ファイルのカレントディレクトリ)
+#partial_directory:
+#
+# HTMLタグをカスタマイズするためのRubyファイル(デフォルト:なし)
+#custom_element: "/home/myname/mok2html/mycustom.rb"
+#
+# ドキュメントのフォーマット(デフォルト:ja)
+#language: "ja"
+#
+# 目次(index)を作成するかどうか(デフォルト: true)
+#index: true
+#
+# メタデータを作成するかどうか(デフォルト: true)
+#metadata: true
+#
+# HTMLヘッダを出力((*しない*))かどうか(デフォルト: false)
+#quiet: false

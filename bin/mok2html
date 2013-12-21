@@ -9,14 +9,15 @@ require "mok2html"
 
 # デフォルト設定値
 options = {
-  :config              => "~/.mok/config.yaml",
+  :config              => ["/etc/mok/mok.yaml", "/etc/mok/mok2html.yaml",
+                           "~/.mok/mok.yaml",   "~/.mok/mok2html.yaml"],
   :css                 => "",
   :javascript          => "",
   :reference_extension => ".html",
   :reference_directory => "",
   :partial_directory   => "",
   :media_directory     => "",
-  :variable            => "",
+  :variable            => ["/etc/mok/variable.yaml","~/.mok/variable.yaml"],
   :language            => "ja",
   :index               => true,
   :quiet               => false,
@@ -31,13 +32,15 @@ def usage(opt)
 end
 
 # 設定ファイルの読み込み
-def set_config_by_file(file, options)
-  file_path = File.expand_path(file)
-  return options unless  File.file?(file_path)
-  config = YAML.load_file( file_path )
-  if config
-    options.each do |key,val|
-      options[key.to_sym] = config[key.to_s] unless config[key.to_s].nil?
+def set_config_by_file(files,options)
+  files.each do |file|
+    file_path = File.expand_path(file)
+    next unless  File.file?(file_path)
+    config = YAML.load_file( file_path )
+    if config
+      options.each do |key,val|
+        options[key.to_sym] = config[key.to_s] unless config[key.to_s].nil?
+      end
     end
   end
   options
@@ -57,9 +60,10 @@ def mok_parser_version
   "mok-parser #{Mok::VERSION} (#{Mok::RELEASE})"
 end
 
-
 # 設定ファイル
-options = set_config_by_file(options[:config], options) unless ARGV.find {|val| val == "--no-config"}
+unless ARGV.find {|val| val == "--no-config"}
+  options = set_config_by_file(options[:config], options)
+end
 
 # コマンドラインオプション
 opt = OptionParser.new do |opt|
