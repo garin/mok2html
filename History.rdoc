@@ -1,3 +1,7 @@
+== 0.1.4 (2013-12-31)
+* new: ドキュメント内プログラムのスイッチオプション(--[no]-erb)を追加
+* fix: --show-config-default が正しく動作していなかった問題を修正
+
 == 0.1.3 (2013-12-21)
 * new: variable_file と partial_base_directory の設定を追加
 * change: 設定をシステム(/etc/mok)とユーザ(~/.mok)の2箇所で指定できるように
@@ -47,4 +51,4 @@
 * minar fix
 
 == 0.0.3 2013-12-01
-* raf-parser プロジェクトから独立 
+* raf-parser プロジェクトから独立
